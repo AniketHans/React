@@ -1,0 +1,8 @@
+Framework v/s Library
+1. Framework has very strict rules about variable naming conventions, folder structure etc
+2. Library does not have any such rules to be used.
+3. React is a library
+
+React
+1. React makes SPA (Single Page Applications). It means the page does not get reloaded.
+2. New documentation of react is at react.dev
