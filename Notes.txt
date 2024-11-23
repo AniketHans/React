@@ -31,6 +31,7 @@ How react renders html when run
     here, React creates it own DOM (called Virtual DOM) and compared it with actual DOM to know which DOM elements need changes.
 4. Each index.html file has a `<div id='root'>`.
 5. Thus, react injects/renders the <App/> component into the div with id=root on the index.html page.
+6. Since, there is only one index.html file in the whole react app, thats why react makes a SPA (Single Page Application)
 
 
 <> </>
