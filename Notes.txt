@@ -6,3 +6,32 @@ Framework v/s Library
 React
 1. React makes SPA (Single Page Applications). It means the page does not get reloaded.
 2. New documentation of react is at react.dev
+3. We have react as the library and we have react-dom and react-native as attachments
+4. React dom is used when we work on websites. It is basically the react library implementation on web. 
+5. React native is used when we work on mobile apps.
+
+npm vs npx
+1. `npm` stands for Node Package Manager. `npm` allows users to install node packages into the system.
+2. `npx` stands for Node Package Executer. `npx` allows users to execute the packages directly without need of installing them first.
+
+Creating React app
+1. `npx creat-react-app <app-name>`. create-react-app is a very bulky utility. It installs a lot of things that we might or might not use in our projects.
+2. `npm create vite@latest` is used to create react app using vite bundler. 
+
+How react renders html when run
+1. create-react-app
+    1.1. React app created using create-react-app has index.html file in public folder. This index.html file is loaded when the react app is run.
+    1.2. React under the hood uses JS and you need to inject JS to the html file for its working using <script> tag.
+    1.3. The script is not injected directly here but react-script dependency (found in package.json) goes to the index file and then injects the JS file (say index.js) into it behind the scene.
+2. vite
+    2.1. The react app created using vite has index.html file present in the root of the project.
+    2.2. It directly injects the JS (say main.js) file to the index.html using <script> tag.
+3. In both the cases, in the injected files (index.js or main.js), we have code like:-
+    `ReactDOM.createRoot(document.getElementById("root")).render( <App /> );`
+    here, React creates it own DOM (called Virtual DOM) and compared it with actual DOM to know which DOM elements need changes.
+4. Each index.html file has a `<div id='root'>`.
+5. Thus, react injects/renders the <App/> component into the div with id=root on the index.html page.
+
+
+<> </>
+1. Empty div or `<> </>` are known as fragments in react.
