@@ -36,3 +36,25 @@ How react renders html when run
 
 <> </>
 1. Empty div or `<> </>` are known as fragments in react.
+
+React elements
+1. React tries to form a tree from the html that we return in a function. It means all the components are converted to a tree by bundlers like babel, vite etc in React.
+2. For eg. we returned `<a href="www.google.com">Google Link</a>` in a component (or function).
+3. React will try to create a tree out of it,
+    {
+        type:'a',
+        props:{
+            href: 'www.google.com',
+            target: '_blank
+        },
+        children: 'Google Link'
+    }
+4. The above tree needs a custom renderer to understand it and convert the HTML written in it to such a form understandable by the browser.
+
+
+
+Adding variables in JSX
+1. If you want to add a variable in returned JSX, you need to enclose it in `{<variable-name>}`.
+2. E.g, `const name ="AH"; return (<h1> Hi! {name}</h1>)`
+3. Note, you enclose evaluated expression in `{}`. It means you can't write JS code (say if else etc) in it but the evaluated value of the expression.
+4. In React.createElement(type,props,children,...variables), the last parameter is varibles. All the injected variables are passed to this createElement function
