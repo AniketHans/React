@@ -57,4 +57,75 @@ Adding variables in JSX
 1. If you want to add a variable in returned JSX, you need to enclose it in `{<variable-name>}`.
 2. E.g, `const name ="AH"; return (<h1> Hi! {name}</h1>)`
 3. Note, you enclose evaluated expression in `{}`. It means you can't write JS code (say if else etc) in it but the evaluated value of the expression.
-4. In React.createElement(type,props,children,...variables), the last parameter is varibles. All the injected variables are passed to this createElement function
+4. In React.createElement(type,props,children,...variables), the last parameter is varibles. All the injected variables are passed to this createElement function.
+
+Advantage of using React
+1. React has a advantage of updating variables at all the places wherever the variable's value is being displayed in UI. React controlls the UI updations.
+2. React hooks are a way to update things in UI effeciently.
+
+useState()
+1. This hook is used to control the state of a variable. This function returns a variable with the initially assigned values and a function reference which can be used to update the state of the variable.
+2. `const [<variable>, <setVariable>] = useState(<variable initial value>)`, e.g const [counter, setCounter] = useState(10)
+3. Note:, the actual value of the variable is not manipulated by the set method. It only changes the state of the variable and update the new state value of the variable in UI wherever it is used.
+4. <setVariable> receives a callback, you can get the last updated state of the <variable> in it.
+    4.1. `setCounter((prevCounterValue) => prevCounterValue+10)`, here we are adding 10 to the previous state of the counter.
+
+createRoot()
+1. It creates a DOM like structure. The browser has its own DOM and the createRoot() will have its own DOM.
+2. It compares browser DOM with its DOM and only updates the things which are updated in UI.
+3. In bowser, if anything changes, the whole DOM is deleted and a new DOM is painted again. This process is also called Page Reload.
+4. In virtual DOM, the browser DOM is traced in tree like structure only update the things in browser DOM which are updated in virtual DOM.
+5. Whenever some element is updated, the vitual DOM is updated immediately. This sometimes leads to unnecessary hitting the update animations of DOM.
+6. Suppose there comes a request to update a UI element, the update is propogated to virtual DOM and in the meanwhile, a new update came for the same UI element, then again the virtual DOM is updated. 
+7. Thus, we needed a way to skip the intermediate/unnecessary virtual DOM updates.
+
+React fibre
+1. This is the new algorithm used to update the Virtual DOM in React.
+2. This save some unnecessary work done to update DOM for some continous updates of the elements.
+3. Its key feature includes the ability to pause, abort and reuse work as new updates come in for elements. It also the ability to assign priority to different types of updates.
+4. Important resource: https://github.com/acdlite/react-fiber-architecture
+5. Features of Fibre:
+    5.1. pause work and come back to it later.
+    5.2. assign priority to different types of work.
+    5.3. reuse previously completed work.
+    5.4. abort work if it's no longer needed.
+
+Hydration
+1. Whenever a webpage is rendered, the HTML and CSS is loaded like you will be able to see buttons etc but you will not be able to interact with them until the JS is loaded.
+2. The injection of the JS into layoout is called Hydration.
+
+Reconciliation
+1. The alogirthm react uses to diff one tree with another to determine which parts need to be changed.
+2. Reconciliation is the algorithm behind what is popularly understood as the "Virtual DOM".
+3. A high-level description goes something like this: 
+    3.1. When you render a React application, a tree of nodes that describes the app is generated and saved in memory. The structure can be similar to 
+        {
+            type:'a',
+            props:{
+                href: 'www.google.com',
+                target: '_blank
+            },
+            children: 'Google Link'
+        }
+    3.2. This tree is then flushed to the rendering environment — for example, in the case of a browser application, it's translated to a set of DOM operations. The tree is flushed to rendering env when .render() is called.
+    3.3. When the app is updated (usually via setState), a new tree is generated. The new tree is diffed with the previous tree to compute which operations are needed to update the rendered app. It means the only changed part in virtual DOM is moved to the Actual/Browser DOM.
+4. Fibre is a rewrite the old reconciler.
+5. Key points of Fibre:
+    5.1. Some component are assumed to generate substantially different trees. React will not attempt to diff them, but rather replace the old tree completely.
+    5.2. Diffing of lists is performed using keys. Keys should be "stable, predictable, and unique. It means if you use keys in your UI components like <li>, <button> etc, the new fibre diff algo work faster on them.
+6. In a UI, it's not necessary for every update to be applied immediately; in fact, doing so can be wasteful, causing frames to drop and degrading the user experience.
+7. Different types of updates have different priorities — an animation update needs to complete more quickly than, say, an update from a data store.
+
+Props
+1. Props make the component reusable.
+2. Basically props are passed to a component to alter values, styling etc in it and that makes a thing reusable.
+3. Props can be sent in the following way:
+    3.1. `<Component prop1=value1 prop2=value2/>`
+4. You cannot pass the array or object using prop1=value1 etc, this will throw error. You have to enclose them in variables.
+    4.1. `<Component prop1=[1,2,3] prop2={name:"AH"}/>`, This is wrong and will throw error.
+    4.2. `<Component prop1={[1,2,3]} prop2={{name:"AH"}}>`, This is correct.
+5. Try to give default value for props so if some props is not passed things dont break in UI.
+
+
+
+
