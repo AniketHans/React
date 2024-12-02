@@ -126,6 +126,81 @@ Props
     4.2. `<Component prop1={[1,2,3]} prop2={{name:"AH"}}>`, This is correct.
 5. Try to give default value for props so if some props is not passed things dont break in UI.
 
+useCallback()
+1. It is a react hook that lets you cache a function definition between re-renders.
+2. It helps optimize performance by preventing unnecessary re-creations of functions on every render.
+3. When you pass a function as a prop or use it in a dependency list of another hook (like useEffect), React may recreate that function every time the component re-renders. This is inefficient for large applications.
+4. The useCallback hook helps avoid this by only recreating the function when certain dependencies change.
+5. Syntax:
+    `
+    const memoizedFunction = useCallback(() => {
+        // function logic
+        }, [dependencies]);`
+    Here, dependencies are an array of values that React will watch. If any of these values change, React will recreate the function. If none of these values change, the function will stay the same.
+6. Deepdive:
+    6.1. In React, everytime a component re-renders, all the functions declared inside the component are recreated by default.
+    6.2. The functions, which uses the variables declared in components to perform some computations and then the computed values are being used in UI, those functions needs to get updated so they get the new value of the variables which was previously computed by them.
+    6.3. Suppose, we have the following code,
+            `
+            const counterComponent = () =>{
+                const [count,setCount] = useState(0)
+                const [incrementalSteps, setIncermentalSteps] = useState(0)
+                const [decrementalSteps, setDecrementalSteps] = useState(0)
+
+                const incrementCounter = () => {
+                    setCount(count + incrementalSteps)
+                }
+
+                const decrementCounter = () =>{
+                    setCount(count - decrementalSteps)
+                }
+
+            }`
+            Here, whenever the counterComponent is rerendered, a new copy of incrementCounter() and decrementCounter() will even though they are dependent only on the incrementalSteps and decrementalSteps values respectively.
+    6.4. Thus, if you use useCallback()
+            `
+            const counterComponent = () =>{
+                const [count,setCount] = useState(0)
+                const [incrementalSteps, setIncermentalSteps] = useState(0)
+                const [decrementalSteps, setDecrementalSteps] = useState(0)
+
+                const incrementCounter = useCallback(() => {
+                    setCount(count + incrementalSteps)
+                }, [incrementalSteps])
+
+                const decrementCounter = useCallback(() =>{
+                    setCount(count - decrementalSteps)
+                }, [decrementalSteps])
+
+            }`
+            Here, the incrementCounter() and decrementCounter() will only be recreated when incrementalSteps and decrementalSteps value is changed respectively.
+            The incrementCounter() will not be recreated even if the value of decrementCounter is changed.
+            Note:
+                Here, incrementCounter() is dependent upon 2 values count and incrementalSteps. But only incrementalSteps value change is being used to update the incrementCounter.
+                Thus, even if the value of count is changed the incrementCounter will not be recreated and get the updated value of count.
+                In the above code, we are using setCount() inside the incrementCounter() so we dont have to worry as setCount() will always have access to the latest value of count.
+                But, if we have to use count value directly into the incrementCounter() to do some computations, then we need to add the count variable as dependency.
+                Otherwise, the incrementCounter() will always work on the stale value of the count function until it is recreated.
+
+useEffect()
+1. Syntax:
+    `
+    useEffect(() => {
+        // Your side effect logic goes here
+    }, [dependencies]);`
+2. We define a list of dependencies in it, the dependencies can be variables, functions etc.
+3. Whenever, any of the dependencies changes its value or state, the callback function defined in the useEffect() is called.
+4. We can use this feature to call other functions which depends on the dependencies listed in the useEffect().
+
+useRef()
+1. The useRef() hook is a very useful hook in React that allows you to persist values between renders without causing a re-render when the value changes. It's commonly used for two purposes:
+    1.1. Accessing DOM Elements: You can use useRef() to directly reference a DOM element (like an input field, button, or div) in your React component.
+    1.2. Storing Mutable Values: You can store any value in a ref that you want to persist across renders without triggering a re-render when the value changes (like storing a previous value, timer ID, or a flag).
+2. Syntax:
+    `const myRef = useRef(initialValue);`
+3. Suppose, you have a count value created using useState(). You want to update the count value but also wanted to preserve the current value before the update. Here, before calling the setCount(), you can use useRef() to preserve the curremt value.
+
+                  
 
 
 
