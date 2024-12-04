@@ -200,7 +200,14 @@ useRef()
     `const myRef = useRef(initialValue);`
 3. Suppose, you have a count value created using useState(). You want to update the count value but also wanted to preserve the current value before the update. Here, before calling the setCount(), you can use useRef() to preserve the curremt value.
 
-                  
+useId()
+1. The useId hook in React is a way to generate unique IDs for elements in your components. It's useful when you need a unique identifier for elements, especially when you're dealing with accessibility (like for labeling form inputs) or other situations where each element needs a unique reference, such as for id attributes in HTML.         
+2. Previously, we need to provide the id manually, which leads to duplication of ids when the component is reused or if we use math.random() then it sometimes also leads to duplication of values.
+3. The useId hook solves this problem by automatically generating stable, unique IDs that are consistent across renders, even if the component is re-rendered or re-mounted.
+4. useId() generates a unique id for the component instance. The generated id is guaranteed to be same on every render and re-render of the component.
+5. The ids are generated to bind html components like binding label with imput field.
 
-
-
+Custom Hooks
+1. Hooks are just functions that are created to perform some task.
+2. Custom hooks are created to club the use of multiple other hooks to add a level of abstraction to the code.
+3. Custom hooks used in a code are underneath calling other react hooks and performing complex calculations on data.
