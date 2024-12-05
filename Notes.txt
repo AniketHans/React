@@ -211,3 +211,10 @@ Custom Hooks
 1. Hooks are just functions that are created to perform some task.
 2. Custom hooks are created to club the use of multiple other hooks to add a level of abstraction to the code.
 3. Custom hooks used in a code are underneath calling other react hooks and performing complex calculations on data.
+
+React Router
+1. This used to control routing of the react app.
+2. Loader:
+    2.1. We can do the api calls directly where we have the routing config for the react app. This is used to optimize the things.
+    2.2. The optimization happen as, when you hover over a link in header or anywhere which have the link to the other route, as hovering is also considered as an event, thus at hovering event, loader calls the api fetch for the data related to the link.
+    2.3. It also helps in caching the called api results.
