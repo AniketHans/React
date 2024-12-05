@@ -250,3 +250,72 @@ Props
    1. We can do the api calls directly where we have the routing config for the react app. This is used to optimize the things.
    2. The optimization happen as, when you hover over a link in header or anywhere which have the link to the other route, as hovering is also considered as an event, thus at hovering event, loader calls the api fetch for the data related to the link.
    3. It also helps in caching the called api results.
+
+### Need for Context
+
+1. Consider the following image:  
+   ![Passing context](./resources/images/need-for-context-api.png)
+   1. Here, suppose `App` component has a prop `username="AH"`. `App` has a component `Dashboard`. `Dashboard` has some components organised in the shown manner.
+   2. Suppose, `CardComponent` component uses the prop `username`.
+   3. Now, we need to pass the `title` component in the manner show by green arrows in the above image from `App` to `CardComponent`
+   4. Here, the components like `Dashboard`, `Rightsidebar`,`TopComponent` are receiving a prop (`title`) which they are not using for themselves but only passing it to other component.
+2. A potential solution can be if we could build something global that which holds all the props needed in out components. All the components fetch any prop they need from the global thing.
+3. Any component can push the props to the global thing and also fetch props from it.
+
+### Context Api and Redux
+
+1. Context Api and Redux solves the above problems.
+2. Context Api is only associated with React.
+3. Redux is third party library which helps in managing the state of data passed.
+4. In react, we have the `react-redux` library to handle things.
+5. `redux-toolkit` (RTK) is an easier version of the `redux` library present in market.
+
+### Context Api
+
+1. The following steps are followed to create the context:
+
+   - Create a js file for the context to be defined. Each multiple contexts in a single project like login context, user context, product context etc.
+   - Now, we use the `createContext` method defined by react to create the context.
+
+     ```javascript
+     const context = React.createContext();
+     export default context;
+     ```
+
+   - Each context gives a **provider**. Since a context is used to provide variables when needed.
+   - All the components, which need access to the variables defined inside the context, will be wrapped inside the context.
+   - The context will act as a wrapper around the components.
+
+     ```
+     <context>
+        <component1/>
+        <component2/>
+        <component3>
+           <component4/>
+        </component3>
+     </context>
+     ```
+
+   - All the components inside the wrapper will get access to the varibles present inside the wrapper.
+   - We need to define the provider for our context which will be a `jsx` component.
+
+     ```javascript
+     import context from "./context.js";
+     function ContextProvider({ children }) {
+       const [user1, setUser1] = userstate(null);
+       const [user2, setUser2] = useState(null);
+       return (
+         <>
+           <context.Provider value={{ user1, setUser1, user2, setUser2 }}>
+             {children}
+           </context.Provider>
+         </>
+       );
+     }
+     ```
+
+   - The varibles defined will passed as props to the other children components from the provider.
+   - The access of the store/context can be given in `main.jsx` or `app.jsx`.
+   - You need to send both the variable and setVariable method in the context so the set method can be used to set data and the variable can be used to get the data
+
+### useContext()
