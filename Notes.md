@@ -318,4 +318,4 @@ Props
    - The access of the store/context can be given in `main.jsx` or `app.jsx`.
    - You need to send both the variable and setVariable method in the context so the set method can be used to set data and the variable can be used to get the data
 
-### useContext()
+2. We can give default values to context also when creating it using createContext().
