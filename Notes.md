@@ -103,12 +103,12 @@
    3. reuse previously completed work.
    4. abort work if it's no longer needed.
 
-Hydration
+### Hydration
 
 1. Whenever a webpage is rendered, the HTML and CSS is loaded like you will be able to see buttons etc but you will not be able to interact with them until the JS is loaded.
 2. The injection of the JS into layoout is called Hydration.
 
-Reconciliation
+### Reconciliation
 
 1. The alogirthm react uses to diff one tree with another to determine which parts need to be changed.
 2. Reconciliation is the algorithm behind what is popularly understood as the "Virtual DOM".
@@ -133,7 +133,7 @@ Reconciliation
 6. In a UI, it's not necessary for every update to be applied immediately; in fact, doing so can be wasteful, causing frames to drop and degrading the user experience.
 7. Different types of updates have different priorities — an animation update needs to complete more quickly than, say, an update from a data store.
 
-Props
+### Props
 
 1. Props make the component reusable.
 2. Basically props are passed to a component to alter values, styling etc in it and that makes a thing reusable.
@@ -337,4 +337,3 @@ Props
      ```
 
 3. The context api is not built for very big projects. In big projects we need to use third party state management solutions like Redux, zustand etc.
-4.
