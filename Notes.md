@@ -318,4 +318,23 @@ Props
    - The access of the store/context can be given in `main.jsx` or `app.jsx`.
    - You need to send both the variable and setVariable method in the context so the set method can be used to set data and the variable can be used to get the data
 
-2. We can give default values to context also when creating it using createContext().
+2. We can give default values to context also, when creating it using createContext().
+
+   - The default values can be both variables and functions.
+   - We dont have to give the function definition as default values. We can just declare the functions.
+
+     ```javascript
+     const UserContext = createContext({
+       //The below are default variables the UserContext is going to have.
+       username: "default user",
+       profileStatus: "active",
+
+       //The below are the functions that the UserContext will be having. We need to define the functions before they are used.
+       changeUsername: () => {},
+       setProfileStatusInactive: () => {},
+       setProfileStatusActive: () => {},
+     });
+     ```
+
+3. The context api is not built for very big projects. In big projects we need to use third party state management solutions like Redux, zustand etc.
+4.
