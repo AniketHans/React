@@ -126,7 +126,7 @@
       ```
    2. This tree is then flushed to the rendering environment — for example, in the case of a browser application, it's translated to a set of DOM operations. The tree is flushed to rendering env when .render() is called.
    3. When the app is updated (usually via setState), a new tree is generated. The new tree is diffed with the previous tree to compute which operations are needed to update the rendered app. It means the only changed part in virtual DOM is moved to the Actual/Browser DOM.
-4. Fibre is a rewrite the old reconciler.
+4. Fibre is a rewrite of the old reconciler.
 5. Key points of Fibre:
    1. Some component are assumed to generate substantially different trees. React will not attempt to diff them, but rather replace the old tree completely.
    2. Diffing of lists is performed using keys. Keys should be **stable, predictable, and unique**. It means if you use keys in your UI components like `<li>`, `<button>` etc, the new fibre diff algo work faster on them.
@@ -337,3 +337,158 @@
      ```
 
 3. The context api is not built for very big projects. In big projects we need to use third party state management solutions like Redux, zustand etc.
+
+### Redux
+
+1. Redux is an independent state management library.
+2. Redux has some its implementations in different frameworks. E.g react-redux
+3. `react-redux` acts as a bridge for implementing redux in react.
+4. Initially, `Flux` was designed by facebook to handle the state managemnet issues.
+5. Flux
+   1. It has 2 main things
+      - State managment
+      - Data flow.
+        - The ease in updation of data was the main focus here. In context api, while updating arrays/objects, we need to spread them so the previos values does not get lost. But in `Flux`, the data flow was such that we dont have to bother about it.
+6. Enhancements of Flux (intro to `Redux`):
+   1. There should be single source of truth i.e there should be a single store only for the entire app.
+   2. The state should be readonly. The state should not be modified or mutated.
+   3. The changes in variables should be made only through functions (also known as `reducers`)
+
+### Redux toolkit
+
+1. `redux-toolkit` makes setting up the `redux` more convenient.
+2. Basically, it makes it easy to configure the `redux`.
+3. It contain some helpers and backend that makes things simple to use for `redux`
+
+### Things in Redux and Redux toolkit
+
+1. Store
+   1. The store will be the single source of truth for the variables.
+   2. It will store all the shared variables that the components will use.
+   3. The store can be put in `src` folder of the project or inside any folder like `store` or `app` anything.
+   4. The retrieval of values can be done from the store itself.
+2. Reducers
+   1. These are functions that are used to change anything inside the store.
+   2. In redux-tookit, the reducers are known as **`slices`**.
+   3. The reducers/slices are put under `features`.
+   4. An app can have multiple features and so we can have multiple reducers/slices as well.
+3. useSelector()
+   1. This is used when we need to fetch a variable/ value from the store.
+4. useDispatch()
+   1. This is used to send a variable/value to the store
+
+### Steps to create store
+
+1. We need to use `configureStore` functionality of the redux-toolkit to create store.
+2. Syntax
+
+   ```javascript
+   import { configureStore } from "@reduxjs/toolkit";
+   import reducer1 from "file-path";
+   export const store = configureStore({ reducer: reducer1 });
+   ```
+
+### Steps to create reducers/slices
+
+1. We will be using `createSlice` method of the redux-toolkit to create the reducers.
+   ```javascript
+         const <sliceName> = createSlice({})
+   ```
+2. We need to define the initialState of the store. Note: the reducers/slices are used to manage the data flow of the store.
+   1. We can assign any value to the initial state.
+3. createSlice()
+
+   1. It takes the following properties as parameters:-
+
+      1. `name` (It is the name of the reducer/slice you want to give)
+      2. `initialState`
+      3. `reducers`
+
+         - reducers is an object which contains properties and functions.
+         - ```javascript
+           reducers: {
+             property1: (state, action) => {};
+             property2: (state, action) => {};
+           }
+           ```
+         - In context api, we were only declaring the functions but here in reducers we need to write definition for the functions as well.
+         - Each function defined in reducers gets access to 2 values.
+           1. `state` :- It gives access to the current state of the variables that we have defined in the initialState.
+           2. `action` :- It contains the values that we pass to the function to perform some task of the data present in the state. For eg, if there are 10 todos in the current state and we need to delete a particular todo with the given id. We get the access of id from the `action`. action has a `payload` property which is an object in itself that contains the values that we send. eg:
+              ```javascript
+              const todoText = action.payload.todotext;
+              ```
+         - We can easily update the state of any variable by simple assigning new value to it.
+           - `state.<variable> = <new-value>`
+
+4. We need to export the reducers separately as the reducers are the only way to update the variables. Thus, those will be used individually.
+   1. `export const { <property1>, <property2> } = <sliceName>.actions;`
+5. We also need to export the reducer also so that we can register it with the store. The store will only allow the registered reducers to make changes to the data.
+   1. `export default <sliceName>.reducer;`
+6. Example
+
+   ```javascript
+   import { createSlice, nanoid } from "@reduxjs/toolkit";
+
+   const initialState = {
+     todos: [{ id: 1, text: "Hello World" }],
+   };
+
+   export const todoSlice = createSlice({
+     name: "todo",
+     initialState,
+     reducers: {
+       addTodo: (state, action) => {
+         const todo = {
+           id: nanoid(), //This used to generate a new id each time.
+           text: action.payload.text,
+         };
+         state.todos.push(todo); //Here, we are updating the state of the variable todos
+       },
+       removeTodo: (state, action) => {
+         state.todos = state.todos.filter(
+           //Here we are also updating the value.
+           (todo) => todo.id != action.payload.removeTodoId
+         );
+       },
+     },
+   });
+
+   export const { addTodo, removeTodo } = todoSlice.actions; //Here we have exported the reducers individually so that they can be used to update the data.
+   export default todoSlice.reducer; //We have to export the reducer separately so we can register them with the store.
+   ```
+
+### useDispatch() and useState()
+
+1. These are functions of react.
+2. These act as the bridge between the react and redux.
+3. These wire up the things between react and redux.
+4. useDispatch()
+   1. useDispatch() uses a reducer to make changes in the store.
+   2. Syntax:
+      ```javascript
+      const dispatch = useDispatch();
+      dispatch(reducer1(params1, params2)); //The params will be retrieved inside the reducer1 from action.payload
+      ```
+5. useSelector()
+   1. useSelector() can be used to access the needed values using the store.
+   2. We get the `state` access inside the useSelector(). We can retrieve values from it using a callback.
+   3. Syntax:
+      ```javascript
+      const todos = useSelector((state) => state.todos);
+      ```
+
+### Provider
+
+1. In react-redux implementation, we also have to wrap things in `provider` like we were doing in context-api.
+2. We can wrap things in both `main.jsx` or `app.jsx`. If we wrap them in main.jsx then the app as well as all the components defined inside app will get access to the store but if we wrap it in app.jsx then all the components except app gets access to the store. The access is necessary to call the useSelector and useDipatch methods.
+3. Syntax:
+   ```javascript
+   import { Provider } from "react-redux";
+   import { store } from "./app/store.js";
+   createRoot(document.getElementById("root")).render(
+     <Provider store={store}>
+       <App />
+     </Provider>
+   );
+   ```
