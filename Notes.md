@@ -492,3 +492,62 @@
      </Provider>
    );
    ```
+
+### useNavigate()
+
+1. useNavigate is a hook in React used for navigating between pages in a web application.
+
+   ```javascript
+   import { useNavigate } from "react-router-dom";
+   function MyComponent() {
+     const navigate = useNavigate(); // Get the navigate function
+     const handleClick = () => {
+       console.log("Hi");
+       navigate("/about"); // Go to the '/about' route
+     };
+     return (
+       <div>
+         <button onClick={handleClick}>Go to About Page</button>
+       </div>
+     );
+   }
+   ```
+
+   - When the button is clicked, the handleClick function is called.
+   - navigate('/about') makes the app switch to the /about route (or page).
+
+2. It is just to navigate to some other slug.
+3. We can programmatically navigate the flow to different page without having to click any link, button etc.
+
+### forwardRef
+
+1. `forwardRef` is a special function in React that lets a parent component send a ref (a reference to a DOM element or component) to a child component. Normally, refs work with class components or DOM elements, but with forwardRef, you can use refs with functional components too.
+2. Code:
+
+   ```javascript
+   import React, { forwardRef } from "react";
+   // Child component uses forwardRef to pass the ref to the button
+   const Child = forwardRef((props, ref) => {
+     return <button ref={ref}>Click Me</button>;
+   });
+
+   function Parent() {
+     const buttonRef = React.createRef();
+
+     const handleClick = () => {
+       buttonRef.current.focus(); // Focuses the button in the child
+     };
+
+     return (
+       <div>
+         <Child ref={buttonRef} />
+         <button onClick={handleClick}>Focus the other button</button>
+       </div>
+     );
+   }
+   ```
+
+   - **forwardRef**: The Child component now uses forwardRef, which lets it accept a ref from the parent.
+   - **Parent passes a ref**: The Parent component creates a ref (buttonRef) and passes it to the Child component.
+   - **Ref is forwarded**: Inside the Child, forwardRef makes sure that the ref is passed down to the button element. So, the parent can control the button directly.
+   - **Action**: When you click the "Focus the other button" button in the parent, it will focus the button inside the Child component because the `buttonRef` is focused in the handler which is passed to the child.

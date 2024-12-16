@@ -23,13 +23,13 @@ export class AuthService {
         name
       );
 
-      if (useAccount) {
+      if (userAccount) {
         return this.login({ email, password });
       } else {
         return userAccount;
       }
     } catch (e) {
-      throw e;
+      console.error(e);
     }
   }
 
@@ -37,7 +37,7 @@ export class AuthService {
     try {
       return await this.account.createEmailPasswordSession(email, password);
     } catch (e) {
-      throw e;
+      console.error(e);
     }
   }
 
@@ -46,15 +46,15 @@ export class AuthService {
     try {
       return await this.account.get();
     } catch (e) {
-      throw e;
+      console.error(e);
     }
   }
 
   async logout() {
     try {
-      return this.account.deleteSessions();
+      return await this.account.deleteSessions();
     } catch (e) {
-      throw e;
+      console.error(e);
     }
   }
 }
