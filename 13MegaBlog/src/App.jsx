@@ -20,7 +20,7 @@ function App() {
           dispatch(logout());
         }
       })
-      .finally(() => setIsLoading(true));
+      .finally(() => setIsLoading(false));
   }, []);
   return isLoading ? (
     <p>Loading...</p>

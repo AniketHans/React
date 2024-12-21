@@ -19,7 +19,7 @@ export default function Protected({ children, authentication = true }) {
   //The authentication variable value is passed by the user which decided if the user is authenticated according to him
   const navigate = useNavigate();
   const [loader, setLoader] = useState(true);
-  const authStatus = useSelector((state) => state.auth.status);
+  const authStatus = useSelector((state) => state.status);
 
   useEffect(() => {
     //Here below, if user sent authentication value as true but the authStatus that we store in store has a value of false. It means the user is not logged actually in but it is sending the authentication as true, pretending to be a logged in user.
@@ -38,5 +38,5 @@ export default function Protected({ children, authentication = true }) {
    *    3. If the authentication value is changed by the user then run the useEffect
    */
 
-  return loader ? <h1>Loading...</h1> : { children };
+  return loader ? <h1>Loading...</h1> : <>{children}</>;
 }

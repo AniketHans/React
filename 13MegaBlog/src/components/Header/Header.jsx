@@ -6,7 +6,7 @@ import Logo from "../Logo";
 import LogoutBtn from "./LogoutBtn";
 
 export default function Header() {
-  const authStatus = useSelector((state) => state.auth.status);
+  const authStatus = useSelector((state) => state.status);
   const navigate = useNavigate();
 
   //In navigation menus, we generally have an array of object containing the info about the navigation links.

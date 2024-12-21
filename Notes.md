@@ -551,3 +551,66 @@
    - **Parent passes a ref**: The Parent component creates a ref (buttonRef) and passes it to the Child component.
    - **Ref is forwarded**: Inside the Child, forwardRef makes sure that the ref is passed down to the button element. So, the parent can control the button directly.
    - **Action**: When you click the "Focus the other button" button in the parent, it will focus the button inside the Child component because the `buttonRef` is focused in the handler which is passed to the child.
+
+### Unsubscribing methods in useEffect
+
+1.  In React, the useEffect hook lets you run some code after your component renders. It's like telling React, "Hey, after you're done displaying this component, do something else."
+2.  For example, you might want to:
+    1. Fetch data from an API
+    2. Set up a timer
+    3. Add event listeners (like listening for clicks or window resizing)
+3.  But here's the thing: sometimes you need to clean up after that "something else" when the component is no longer needed, or when something changes. That's where unsubscribing or cleaning up comes in.
+4.  Why do you need to unsubscribe or clean up?  
+    Imagine you set up something like:
+
+    - A timer that ticks every second (setInterval).
+    - A click event listener to track clicks on the window.
+    - A WebSocket to receive messages.
+
+- If you don't clean up these things when the component disappears, they could keep running in the background, even though the component is no longer there. This can lead to memory leaks or performance problems.
+
+5.  How to clean up in `useEffect`
+    - React lets you clean up stuff in useEffect by returning a cleanup function. This function will run when the component is removed from the screen or before the effect runs again.
+6.  Here's the flow:
+
+    - **Do something** (side effect) in the useEffect function.
+    - **Clean up** that thing when the component unmounts (gets removed from the screen), or when something changes that requires you to "un-do" the effect.
+
+7.  **Example: Setting up and cleaning a timer**
+
+    - Imagine you want to set a timer that counts seconds. You need to clear the timer when the component goes away to avoid memory problems.
+    - Code:
+
+      ```javascript
+      import React, { useEffect, useState } from "react";
+      const TimerComponent = () => {
+      const [time, setTime] = useState(0);
+      useEffect(() => {
+        // Set up a timer
+        const timerId = setInterval(() => {
+          setTime((prevTime) => prevTime + 1); // Increase time every second
+        }, 1000);
+        // Clean up (clear the timer) when the component goes away
+        return () => {
+          clearInterval(timerId);
+        };
+      }, []); // This effect runs only once when the component is mounted
+      return <div>Time: {time}</div>;
+      };
+      `
+
+      ```
+
+    - **How it works:**
+      - **Effect runs:** When the component first mounts (appears on screen), it starts a timer that updates the time every second.
+      - **Cleanup function:** When the component unmounts (disappears from the screen), React runs the cleanup function and clears the timer so it stops ticking.
+
+8.  **Summary:**
+    1. useEffect runs after your component renders.
+    2. Inside useEffect, you can set up side effects like timers, event listeners, or subscriptions.
+    3. To prevent things from "sticking around" and causing problems, return a cleanup function from useEffect.
+       > This cleanup function runs when the component unmounts or before the effect runs again.
+9.  **Why is cleanup important?**
+    - Without cleaning up, the side effects could keep running even after your component is removed from the screen, leading to problems like:
+      1. **Memory leaks:** Resources are still being used even though they are no longer needed.
+      2. **Performance issues:** Unnecessary processes (like timers or event listeners) continue to run in the background.
